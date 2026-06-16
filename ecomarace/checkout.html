@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Ecomarace</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="header__logo">eco<span>marace</span></a>
+    <div class="header__actions">
+      <div id="user-area"></div>
+      <a href="cart.html" class="cart-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart
+        <span id="cart-badge"></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <!-- Stepper -->
+    <div class="stepper">
+      <div class="step done">
+        <div class="step__num">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <span class="step__label">Cart</span>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step active">
+        <div class="step__num">2</div>
+        <span class="step__label">Shipping</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step__num">3</div>
+        <span class="step__label">Payment</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step__num">4</div>
+        <span class="step__label">Confirm</span>
+      </div>
+    </div>
+
+    <div class="page-checkout">
+      <!-- Left: form -->
+      <div>
+        <div class="checkout-card">
+          <h2>Shipping Information</h2>
+          <form id="checkout-form" novalidate>
+            <div class="row-2">
+              <div class="form-group">
+                <label for="first">First Name *</label>
+                <input class="input" id="first" type="text" placeholder="Jane" autocomplete="given-name" />
+                <span class="field-error" id="err-first">Required.</span>
+              </div>
+              <div class="form-group">
+                <label for="last">Last Name *</label>
+                <input class="input" id="last" type="text" placeholder="Smith" autocomplete="family-name" />
+                <span class="field-error" id="err-last">Required.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input class="input" id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+              <span class="field-error" id="err-email">Enter a valid email.</span>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input class="input" id="phone" type="tel" placeholder="+1 (555) 000-0000" autocomplete="tel" />
+            </div>
+            <div class="form-group">
+              <label for="address">Street Address *</label>
+              <input class="input" id="address" type="text" placeholder="123 Main St, Apt 4B" autocomplete="street-address" />
+              <span class="field-error" id="err-address">Required.</span>
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label for="city">City *</label>
+                <input class="input" id="city" type="text" placeholder="San Francisco" autocomplete="address-level2" />
+                <span class="field-error" id="err-city">Required.</span>
+              </div>
+              <div class="form-group">
+                <label for="state">State *</label>
+                <select class="input" id="state" autocomplete="address-level1">
+                  <option value="">Select state…</option>
+                  <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+                  <option>California</option><option>Colorado</option><option>Connecticut</option>
+                  <option>Delaware</option><option>Florida</option><option>Georgia</option>
+                  <option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option>
+                  <option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option>
+                  <option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option>
+                  <option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option>
+                  <option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option>
+                  <option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option>
+                  <option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option>
+                  <option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option>
+                  <option>Tennessee</option><option selected>Texas</option><option>Utah</option><option>Vermont</option>
+                  <option>Virginia</option><option>Washington</option><option>West Virginia</option>
+                  <option>Wisconsin</option><option>Wyoming</option>
+                </select>
+                <span class="field-error" id="err-state">Required.</span>
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label for="zip">ZIP Code *</label>
+                <input class="input" id="zip" type="text" placeholder="94105" maxlength="10" autocomplete="postal-code" />
+                <span class="field-error" id="err-zip">Enter a valid ZIP.</span>
+              </div>
+              <div class="form-group">
+                <label for="country">Country</label>
+                <select class="input" id="country" autocomplete="country-name">
+                  <option selected>United States</option>
+                  <option>Canada</option>
+                  <option>United Kingdom</option>
+                  <option>Australia</option>
+                  <option>Germany</option>
+                  <option>France</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="checkout-card" style="margin-top:1.25rem;">
+          <h2>Shipping Method</h2>
+          <div class="shipping-options" id="shipping-options">
+            <label class="shipping-option selected" data-price="0">
+              <input type="radio" name="shipping" value="standard" checked />
+              <div class="shipping-option__info">
+                <div class="shipping-option__name">🌱 Standard Eco Shipping</div>
+                <div class="shipping-option__desc">5–7 business days · Carbon-offset delivery</div>
+              </div>
+              <div class="shipping-option__price text-green">Free</div>
+            </label>
+            <label class="shipping-option" data-price="8.99">
+              <input type="radio" name="shipping" value="express" />
+              <div class="shipping-option__info">
+                <div class="shipping-option__name">⚡ Express Shipping</div>
+                <div class="shipping-option__desc">2–3 business days</div>
+              </div>
+              <div class="shipping-option__price">$8.99</div>
+            </label>
+            <label class="shipping-option" data-price="19.99">
+              <input type="radio" name="shipping" value="overnight" />
+              <div class="shipping-option__info">
+                <div class="shipping-option__name">🚀 Overnight</div>
+                <div class="shipping-option__desc">Next business day by 10:30am</div>
+              </div>
+              <div class="shipping-option__price">$19.99</div>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" style="margin-top:1.25rem;padding:1rem;" onclick="submitCheckout()">
+          Continue to Payment
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <a href="cart.html" class="btn btn--ghost btn--full" style="margin-top:.5rem;">← Back to Cart</a>
+      </div>
+
+      <!-- Right: order summary -->
+      <div class="order-summary" id="order-summary"></div>
+    </div>
+  </div>
+</main>
+
+<div id="toasts"></div>
+<script src="js/app.js"></script>
+<script>
+  if (!Auth.user()) { window.location.href = 'login.html'; }
+  initHeader();
+
+  // Pre-fill from user
+  const user = Auth.user();
+  if (user) {
+    const [first, ...rest] = (user.name || '').split(' ');
+    document.getElementById('first').value = first || '';
+    document.getElementById('last').value  = rest.join(' ') || '';
+    document.getElementById('email').value = user.email || '';
+  }
+
+  // Pre-fill from saved checkout
+  const saved = Checkout.get();
+  if (saved.address) document.getElementById('address').value = saved.address;
+  if (saved.city)    document.getElementById('city').value    = saved.city;
+  if (saved.zip)     document.getElementById('zip').value     = saved.zip;
+
+  // Shipping options
+  let selectedShipping = { name:'Standard Eco Shipping', price:0, days:'5–7 business days' };
+  document.querySelectorAll('.shipping-option').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.shipping-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      const price = parseFloat(el.dataset.price);
+      const name  = el.querySelector('.shipping-option__name').textContent;
+      const days  = el.querySelector('.shipping-option__desc').textContent;
+      selectedShipping = { name, price, days };
+      renderSummary();
+    });
+  });
+
+  function renderSummary() {
+    const items    = Cart.get();
+    const subtotal = Cart.subtotal();
+    const tax      = subtotal * 0.08;
+    const total    = subtotal + selectedShipping.price + tax;
+
+    document.getElementById('order-summary').innerHTML = `
+      <h3>Order Summary (${Cart.count()} items)</h3>
+      ${items.map(i => `
+        <div class="summary-item">
+          <div class="summary-item__img" style="background:${i.product.bg}">${i.product.icon}</div>
+          <div class="summary-item__info">
+            <div class="summary-item__name">${i.product.name}</div>
+            <div class="summary-item__var">Qty: ${i.qty}</div>
+          </div>
+          <div class="summary-item__price">${fmt(i.product.price * i.qty)}</div>
+        </div>`).join('')}
+      <div class="summary-totals">
+        <div class="summary-row"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
+        <div class="summary-row"><span>Shipping</span><span>${selectedShipping.price === 0 ? '<span style="color:var(--green)">Free</span>' : fmt(selectedShipping.price)}</span></div>
+        <div class="summary-row"><span>Tax (8%)</span><span>${fmt(tax)}</span></div>
+        <div class="summary-row summary-row--total"><span>Total</span><span>${fmt(total)}</span></div>
+      </div>
+      <div style="font-size:.8rem;color:var(--text2);margin-top:1rem;padding:.75rem;background:var(--bg);border-radius:8px;">
+        <strong>🌱 Eco note:</strong> Your order will be shipped carbon-neutral via our partner network.
+      </div>`;
+  }
+
+  renderSummary();
+
+  function showErr(id, msg) { const el = document.getElementById(id); if(el){el.textContent=msg;el.classList.add('show');} }
+  function clearErr(id) { document.getElementById(id)?.classList.remove('show'); }
+
+  function submitCheckout() {
+    const fields = [
+      { id:'first',   errId:'err-first',   label:'First name',    check: v => v.trim().length > 0 },
+      { id:'last',    errId:'err-last',     label:'Last name',     check: v => v.trim().length > 0 },
+      { id:'email',   errId:'err-email',    label:'Email',         check: v => v.includes('@') },
+      { id:'address', errId:'err-address',  label:'Address',       check: v => v.trim().length > 0 },
+      { id:'city',    errId:'err-city',     label:'City',          check: v => v.trim().length > 0 },
+      { id:'state',   errId:'err-state',    label:'State',         check: v => v.length > 0 },
+      { id:'zip',     errId:'err-zip',      label:'ZIP',           check: v => /^\d{5}/.test(v) },
+    ];
+
+    let ok = true;
+    fields.forEach(f => {
+      clearErr(f.errId);
+      const v = document.getElementById(f.id)?.value || '';
+      if (!f.check(v)) { showErr(f.errId, `${f.label} is required.`); ok = false; }
+    });
+    if (!ok) { showToast('Please fill in all required fields.', 'error'); return; }
+
+    Checkout.save({
+      first:    document.getElementById('first').value,
+      last:     document.getElementById('last').value,
+      email:    document.getElementById('email').value,
+      phone:    document.getElementById('phone').value,
+      address:  document.getElementById('address').value,
+      city:     document.getElementById('city').value,
+      state:    document.getElementById('state').value,
+      zip:      document.getElementById('zip').value,
+      country:  document.getElementById('country').value,
+      shipping: selectedShipping,
+    });
+
+    window.location.href = 'payment.html';
+  }
+</script>
+</body>
+</html>

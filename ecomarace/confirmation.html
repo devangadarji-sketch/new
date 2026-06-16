@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Confirmed — Ecomarace</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    .confetti { position: fixed; top:0; left:0; width:100%; pointer-events:none; z-index:9999; }
+    .c-dot {
+      position: absolute;
+      top: -12px;
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(720deg); opacity:0; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="header__logo">eco<span>marace</span></a>
+    <div class="header__actions">
+      <div id="user-area"></div>
+      <a href="cart.html" class="cart-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart
+        <span id="cart-badge"></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Stepper -->
+  <div class="container">
+    <div class="stepper">
+      <div class="step done"><div class="step__num"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step__label">Cart</span></div>
+      <div class="step-line done"></div>
+      <div class="step done"><div class="step__num"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step__label">Shipping</span></div>
+      <div class="step-line done"></div>
+      <div class="step done"><div class="step__num"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step__label">Payment</span></div>
+      <div class="step-line done"></div>
+      <div class="step active"><div class="step__num"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step__label">Confirm</span></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="confirmation-page">
+      <div class="confirmation-icon">🎉</div>
+      <h1>Order Confirmed!</h1>
+      <p>Thank you for your purchase. We've received your order and it's now being processed. A confirmation email has been sent to <strong id="conf-email"></strong>.</p>
+
+      <div class="order-number" id="conf-order-number">ECO-XXXXXX</div>
+
+      <div class="order-details-card" id="order-details"></div>
+
+      <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+        <a href="shop.html" class="btn btn--primary btn--lg">Continue Shopping</a>
+        <a href="index.html" class="btn btn--outline btn--lg">Back to Home</a>
+      </div>
+
+      <div style="margin-top:2rem;padding:1.25rem;background:var(--green-light);border-radius:var(--radius-lg);">
+        <h3 style="color:var(--green-dark);margin-bottom:.5rem;">🌱 Your impact</h3>
+        <p style="color:var(--green-dark);font-size:.9rem;margin:0;">This order was fulfilled using carbon-neutral shipping and 1% of your purchase goes toward reforestation through our <strong>Forests for All</strong> programme.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom" style="border-top:1px solid #1e293b;padding-top:1.5rem;">
+      <span>&copy; 2026 Ecomarace, Inc.</span>
+      <span>Questions? <a href="#" style="color:var(--green)">Contact support</a></span>
+    </div>
+  </div>
+</footer>
+
+<canvas class="confetti" id="confetti"></canvas>
+<div id="toasts"></div>
+<script src="js/app.js"></script>
+<script>
+  initHeader();
+
+  const order = Checkout.getOrder();
+
+  if (!order || !order.number) {
+    document.querySelector('.confirmation-page').innerHTML = `
+      <div style="font-size:3rem;margin-bottom:1rem;">🛒</div>
+      <h2>No recent order found.</h2>
+      <p>It looks like you haven't placed an order yet.</p>
+      <a href="shop.html" class="btn btn--primary" style="margin-top:1.5rem;">Shop Now</a>`;
+  } else {
+    document.getElementById('conf-order-number').textContent = order.number;
+    document.getElementById('conf-email').textContent = order.address?.email || 'your email';
+    document.title = `Order ${order.number} Confirmed — Ecomarace`;
+
+    const items = order.items || [];
+    document.getElementById('order-details').innerHTML = `
+      ${items.map(i => `
+        <div class="order-details-row">
+          <span>${i.product.icon} ${i.product.name} × ${i.qty}</span>
+          <strong>${fmt(i.product.price * i.qty)}</strong>
+        </div>`).join('')}
+      <div class="order-details-row">
+        <span>Shipping (${order.shipping?.name || 'Standard'})</span>
+        <strong>${order.shipping?.price === 0 ? 'Free' : fmt(order.shipping?.price || 0)}</strong>
+      </div>
+      <div class="order-details-row">
+        <span>Tax</span>
+        <strong>${fmt(order.total * 0.08 / 1.08 * 0.08)}</strong>
+      </div>
+      <div class="order-details-row" style="font-size:1.05rem;">
+        <span><strong>Total Paid</strong></span>
+        <strong style="color:var(--green);">${fmt(order.total)}</strong>
+      </div>
+      <div class="order-details-row">
+        <span>Payment Method</span>
+        <strong>${order.method || 'Card'}</strong>
+      </div>
+      <div class="order-details-row">
+        <span>Order Date</span>
+        <strong>${order.date || new Date().toLocaleDateString()}</strong>
+      </div>
+      <div class="order-details-row">
+        <span>Deliver to</span>
+        <strong>${order.address?.first || ''} ${order.address?.last || ''}, ${order.address?.city || ''}</strong>
+      </div>
+      <div class="order-details-row">
+        <span>Estimated Delivery</span>
+        <strong style="color:var(--green);">5–7 business days</strong>
+      </div>`;
+
+    // Confetti
+    spawnConfetti();
+  }
+
+  function spawnConfetti() {
+    const colors = ['#059669','#34d399','#f59e0b','#60a5fa','#c084fc','#fb7185'];
+    const body = document.body;
+    for (let i = 0; i < 80; i++) {
+      setTimeout(() => {
+        const dot = document.createElement('div');
+        dot.className = 'c-dot';
+        dot.style.cssText = `
+          left:${Math.random()*100}vw;
+          background:${colors[Math.floor(Math.random()*colors.length)]};
+          width:${6+Math.random()*8}px;
+          height:${6+Math.random()*8}px;
+          animation-duration:${1.5+Math.random()*2.5}s;
+          animation-delay:${Math.random()*0.5}s;
+          transform:rotate(${Math.random()*360}deg);
+          border-radius:${Math.random()>.5?'50%':'3px'};
+        `;
+        document.getElementById('confetti').appendChild(dot);
+        setTimeout(() => dot.remove(), 4000);
+      }, i * 30);
+    }
+  }
+</script>
+</body>
+</html>

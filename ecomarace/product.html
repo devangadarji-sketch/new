@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product — Ecomarace</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="header__logo">eco<span>marace</span></a>
+    <nav>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </nav>
+    <div class="header__search">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search products…" autocomplete="off" />
+    </div>
+    <div class="header__actions">
+      <div id="user-area"></div>
+      <a href="cart.html" class="cart-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart
+        <span id="cart-badge"></span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container" id="product-container" style="padding-top:1rem;">
+    <!-- populated by JS -->
+  </div>
+
+  <div class="container" style="padding-bottom:5rem;">
+    <div class="section-hd" style="margin-top:3rem;">
+      <div>
+        <div class="section-tag">You may also like</div>
+        <h2>Related products</h2>
+      </div>
+      <a href="shop.html" class="btn btn--outline btn--sm">View all</a>
+    </div>
+    <div class="products-grid" id="related-grid"></div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom" style="border-top:1px solid #1e293b;padding-top:1.5rem;">
+      <span>&copy; 2026 Ecomarace, Inc.</span>
+      <a href="shop.html" style="color:#94a3b8;">← Continue shopping</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toasts"></div>
+<script src="js/app.js"></script>
+<script>
+  initHeader();
+
+  const id = Number(new URLSearchParams(location.search).get('id')) || 1;
+  const p  = PRODUCTS.find(x => x.id === id);
+  if (!p) { document.getElementById('product-container').innerHTML = '<p style="padding:3rem 0;color:var(--text2);">Product not found. <a href="shop.html" style="color:var(--green)">Browse all products →</a></p>'; }
+  else {
+    document.title = `${p.name} — Ecomarace`;
+
+    let selectedColor = p.colors[0];
+    let selectedSize  = p.sizes[0];
+    let qty = 1;
+
+    function render() {
+      document.getElementById('product-container').innerHTML = `
+        <div class="breadcrumb" style="margin-bottom:1.5rem;">
+          <a href="index.html">Home</a> ›
+          <a href="shop.html">Shop</a> ›
+          <a href="shop.html?cat=${p.category}">${p.category}</a> ›
+          <span>${p.name}</span>
+        </div>
+
+        <div class="product-detail">
+          <!-- Gallery -->
+          <div class="product-gallery">
+            <div class="product-main-img" id="main-img" style="background:${p.bg}">
+              <span id="main-icon">${p.icon}</span>
+            </div>
+            <div class="product-thumbs">
+              ${[p.bg, '#f1f5f9', '#e0f2fe', '#fef9c3'].map((bg, i) => `
+                <div class="product-thumb ${i===0?'active':''}" style="background:${bg}" data-idx="${i}" onclick="setThumb(this,'${bg}')">
+                  ${i===0 ? p.icon : '📦'}
+                </div>`).join('')}
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="product-info">
+            <div class="product-info__cat">${p.category}</div>
+            <h1 class="product-info__title">${p.name}</h1>
+            <div class="product-info__rating">
+              ${stars(p.rating)}
+              <span>${p.rating} · ${p.reviews} reviews</span>
+            </div>
+            <div class="product-info__price">
+              <span class="current">${fmt(p.price)}</span>
+              ${p.original ? `<span class="original">${fmt(p.original)}</span><span class="save">Save ${pct(p.price,p.original)}%</span>` : ''}
+            </div>
+            <p class="product-info__desc">${p.desc}</p>
+
+            <!-- Colors -->
+            ${p.colors.length > 1 ? `
+            <div class="variant-label">Color <span id="color-label">${selectedColor}</span></div>
+            <div class="color-swatches" id="color-swatches">
+              ${p.colors.map(c => `<span class="color-swatch ${c===selectedColor?'active':''}" style="background:${c}" onclick="selectColor('${c}',this)" title="${c}"></span>`).join('')}
+            </div>` : ''}
+
+            <!-- Sizes -->
+            <div class="variant-label">Size <span id="size-label">${selectedSize}</span></div>
+            <div class="size-options" id="size-options">
+              ${p.sizes.map(s => `<button class="size-btn ${s===selectedSize?'active':''}" onclick="selectSize('${s}',this)">${s}</button>`).join('')}
+            </div>
+
+            <!-- Qty -->
+            <div class="qty-row">
+              <div class="qty-control">
+                <button onclick="changeQty(-1)">−</button>
+                <input type="number" id="qty-input" min="1" max="99" value="1" onchange="qty=Math.max(1,Math.min(99,parseInt(this.value)||1));this.value=qty" />
+                <button onclick="changeQty(1)">+</button>
+              </div>
+              <span style="font-size:.875rem;color:var(--green);">✓ In stock</span>
+            </div>
+
+            <!-- Actions -->
+            <div class="product-actions">
+              <button class="btn btn--primary btn--lg" onclick="addToCart()">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                Add to Cart
+              </button>
+              <button class="btn btn--secondary btn--lg" onclick="buyNow()">Buy Now</button>
+              <button class="btn btn--ghost btn--icon" title="Wishlist" onclick="showToast('Added to wishlist ❤️','info')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              </button>
+            </div>
+
+            <!-- Perks -->
+            <div class="product-perks">
+              <div class="product-perk">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Free shipping over $50
+              </div>
+              <div class="product-perk">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                30-day returns
+              </div>
+              <div class="product-perk">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Secure checkout
+              </div>
+              <div class="product-perk">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Certified sustainable
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function setThumb(el, bg) {
+      document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('main-img').style.background = bg;
+    }
+
+    function selectColor(color, el) {
+      selectedColor = color;
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('color-label').textContent = color;
+    }
+
+    function selectSize(size, el) {
+      selectedSize = size;
+      document.querySelectorAll('.size-btn').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('size-label').textContent = size;
+    }
+
+    function changeQty(d) {
+      qty = Math.max(1, Math.min(99, qty + d));
+      document.getElementById('qty-input').value = qty;
+    }
+
+    function addToCart() {
+      Cart.add(p, qty, { color: selectedColor, size: selectedSize });
+    }
+
+    function buyNow() {
+      Cart.add(p, qty, { color: selectedColor, size: selectedSize });
+      window.location.href = 'cart.html';
+    }
+
+    render();
+
+    // Related products
+    const related = PRODUCTS.filter(x => x.id !== p.id && (x.category === p.category || Math.random() > .5)).slice(0, 4);
+    document.getElementById('related-grid').innerHTML = related.map(productCard).join('');
+  }
+</script>
+</body>
+</html>

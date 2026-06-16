@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment — Ecomarace</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="header__logo">eco<span>marace</span></a>
+    <div class="header__actions">
+      <div id="user-area"></div>
+      <a href="cart.html" class="cart-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart
+        <span id="cart-badge"></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <!-- Stepper -->
+    <div class="stepper">
+      <div class="step done">
+        <div class="step__num">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <span class="step__label">Cart</span>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step done">
+        <div class="step__num">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <span class="step__label">Shipping</span>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step active">
+        <div class="step__num">3</div>
+        <span class="step__label">Payment</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step__num">4</div>
+        <span class="step__label">Confirm</span>
+      </div>
+    </div>
+
+    <div class="page-checkout">
+      <!-- Left: payment form -->
+      <div>
+        <!-- Payment method tabs -->
+        <div class="checkout-card">
+          <h2>Payment Method</h2>
+          <div class="payment-tabs">
+            <button class="payment-tab active" onclick="setMethod('card',this)">
+              <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Credit Card
+            </button>
+            <button class="payment-tab" onclick="setMethod('paypal',this)">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="#003087"><path d="M19.554 9.488c.121.74.121 1.555-.04 2.373-.56 2.716-2.294 4.108-5.154 4.108H13.2l-.724 4.457H10.2L9 4.5h4.965c2.156 0 3.646 1.056 4.282 2.716.197.52.318 1.073.307 1.555v.717z"/><path fill="#009cde" d="M20.956 6.975c.12.74.12 1.554-.04 2.373-.56 2.716-2.295 4.107-5.154 4.107H14.6l-.724 4.458H11.6L10.4 7h4.964c2.157 0 3.647 1.056 4.283 2.716.197.52.319 1.073.308 1.554v.705z"/></svg>
+              PayPal
+            </button>
+            <button class="payment-tab" onclick="setMethod('apple',this)">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              Apple Pay
+            </button>
+          </div>
+
+          <!-- Card panel -->
+          <div id="panel-card">
+            <!-- Live card preview -->
+            <div class="card-preview">
+              <div class="card-chip"></div>
+              <div class="card-number" id="preview-number">•••• •••• •••• ••••</div>
+              <div class="card-bottom">
+                <div>
+                  <div class="card-label">Card Holder</div>
+                  <div class="card-value" id="preview-name">YOUR NAME</div>
+                </div>
+                <div>
+                  <div class="card-label">Expires</div>
+                  <div class="card-value" id="preview-expiry">MM/YY</div>
+                </div>
+                <div>
+                  <div class="card-label">Network</div>
+                  <div class="card-value" id="preview-network">—</div>
+                </div>
+              </div>
+            </div>
+
+            <form id="card-form" novalidate>
+              <div class="form-group">
+                <label for="card-name">Name on Card *</label>
+                <input class="input" id="card-name" type="text" placeholder="Jane Smith" autocomplete="cc-name" />
+                <span class="field-error" id="err-card-name">Required.</span>
+              </div>
+              <div class="form-group">
+                <label for="card-number">Card Number *</label>
+                <div class="input-wrap">
+                  <input class="input" id="card-number" type="text" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number" inputmode="numeric" />
+                  <span class="input-icon" id="card-network-icon" style="pointer-events:none;font-size:1.1rem;"></span>
+                </div>
+                <span class="field-error" id="err-card-number">Enter a valid 16-digit card number.</span>
+              </div>
+              <div class="row-2">
+                <div class="form-group">
+                  <label for="card-expiry">Expiry Date *</label>
+                  <input class="input" id="card-expiry" type="text" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" inputmode="numeric" />
+                  <span class="field-error" id="err-card-expiry">Invalid expiry date.</span>
+                </div>
+                <div class="form-group">
+                  <label for="card-cvv">CVV *
+                    <svg style="display:inline;vertical-align:middle;cursor:help;" width="14" height="14" fill="none" stroke="#94a3b8" stroke-width="2" viewBox="0 0 24 24" title="3-4 digit security code on back of card"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  </label>
+                  <input class="input" id="card-cvv" type="text" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric" />
+                  <span class="field-error" id="err-card-cvv">Invalid CVV.</span>
+                </div>
+              </div>
+              <label class="checkbox-row" style="margin-bottom:1.5rem;">
+                <input type="checkbox" id="save-card" />
+                Save card for future purchases
+              </label>
+            </form>
+          </div>
+
+          <!-- PayPal panel -->
+          <div id="panel-paypal" class="hidden">
+            <div style="text-align:center;padding:2.5rem 1rem;">
+              <div style="font-size:3rem;margin-bottom:1rem;">🅿️</div>
+              <h3 style="margin-bottom:.5rem;">Continue with PayPal</h3>
+              <p style="margin-bottom:1.5rem;">You'll be redirected to PayPal to complete your purchase securely.</p>
+              <button class="btn btn--primary btn--lg" style="background:#003087;" onclick="placeOrder('PayPal')">
+                Pay with PayPal
+              </button>
+            </div>
+          </div>
+
+          <!-- Apple Pay panel -->
+          <div id="panel-apple" class="hidden">
+            <div style="text-align:center;padding:2.5rem 1rem;">
+              <div style="font-size:3rem;margin-bottom:1rem;"></div>
+              <h3 style="margin-bottom:.5rem;">Apple Pay</h3>
+              <p style="margin-bottom:1.5rem;">Use Face ID or Touch ID to pay instantly.</p>
+              <button class="btn btn--secondary btn--lg" style="background:#000;" onclick="placeOrder('Apple Pay')">
+                 Pay with Apple Pay
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Billing address -->
+        <div class="checkout-card" id="billing-section">
+          <h2>Billing Address</h2>
+          <label class="checkbox-row" style="margin-bottom:1rem;">
+            <input type="checkbox" id="same-address" checked onchange="toggleBilling()" />
+            Same as shipping address
+          </label>
+          <div id="billing-form" class="hidden">
+            <div class="row-2">
+              <div class="form-group"><label>First Name</label><input class="input" placeholder="Jane" /></div>
+              <div class="form-group"><label>Last Name</label><input class="input" placeholder="Smith" /></div>
+            </div>
+            <div class="form-group"><label>Address</label><input class="input" placeholder="123 Main St" /></div>
+            <div class="row-2">
+              <div class="form-group"><label>City</label><input class="input" placeholder="San Francisco" /></div>
+              <div class="form-group"><label>ZIP</label><input class="input" placeholder="94105" /></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" style="margin-top:1.25rem;padding:1.1rem;font-size:1.05rem;" id="pay-btn" onclick="placeOrder('Card')">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Place Order — <span id="pay-total">$0.00</span>
+        </button>
+        <a href="checkout.html" class="btn btn--ghost btn--full" style="margin-top:.5rem;">← Back to Shipping</a>
+        <div style="display:flex;justify-content:center;gap:1rem;margin-top:1.25rem;font-size:.75rem;color:var(--text3);">
+          <span>🔒 256-bit SSL</span><span>·</span><span>PCI DSS Compliant</span><span>·</span><span>Secured by Stripe</span>
+        </div>
+      </div>
+
+      <!-- Right: order summary -->
+      <div id="order-summary" class="order-summary"></div>
+    </div>
+  </div>
+</main>
+
+<div id="toasts"></div>
+<script src="js/app.js"></script>
+<script>
+  if (!Auth.user()) { window.location.href = 'login.html'; }
+  initHeader();
+
+  const checkoutData = Checkout.get();
+  const items        = Cart.get();
+  const subtotal     = Cart.subtotal();
+  const shipping     = checkoutData.shipping?.price || 0;
+  const tax          = subtotal * 0.08;
+  const total        = subtotal + shipping + tax;
+
+  document.getElementById('pay-total').textContent = fmt(total);
+
+  // Order summary
+  document.getElementById('order-summary').innerHTML = `
+    <h3>Order Summary</h3>
+    ${items.map(i => `
+      <div class="summary-item">
+        <div class="summary-item__img" style="background:${i.product.bg}">${i.product.icon}</div>
+        <div class="summary-item__info">
+          <div class="summary-item__name">${i.product.name}</div>
+          <div class="summary-item__var">Qty: ${i.qty}</div>
+        </div>
+        <div class="summary-item__price">${fmt(i.product.price * i.qty)}</div>
+      </div>`).join('')}
+    <div class="summary-totals">
+      <div class="summary-row"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
+      <div class="summary-row"><span>Shipping</span><span>${shipping === 0 ? '<span style="color:var(--green)">Free</span>' : fmt(shipping)}</span></div>
+      <div class="summary-row"><span>Tax (8%)</span><span>${fmt(tax)}</span></div>
+      <div class="summary-row summary-row--total"><span>Total</span><span>${fmt(total)}</span></div>
+    </div>
+    ${checkoutData.first ? `
+    <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);">
+      <div style="font-size:.8rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;">Shipping to</div>
+      <div style="font-size:.9rem;">${checkoutData.first} ${checkoutData.last}</div>
+      <div style="font-size:.85rem;color:var(--text2);">${checkoutData.address || ''}</div>
+      <div style="font-size:.85rem;color:var(--text2);">${checkoutData.city || ''}, ${checkoutData.state || ''} ${checkoutData.zip || ''}</div>
+      <div style="font-size:.8rem;color:var(--green);margin-top:.4rem;">📦 ${checkoutData.shipping?.days || '5–7 business days'}</div>
+    </div>` : ''}`;
+
+  // Payment method toggle
+  let currentMethod = 'card';
+  function setMethod(method, el) {
+    currentMethod = method;
+    document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('panel-card').classList.toggle('hidden', method !== 'card');
+    document.getElementById('panel-paypal').classList.toggle('hidden', method !== 'paypal');
+    document.getElementById('panel-apple').classList.toggle('hidden', method !== 'apple');
+    document.getElementById('billing-section').classList.toggle('hidden', method !== 'card');
+    document.getElementById('pay-btn').classList.toggle('hidden', method !== 'card');
+    document.querySelector('a[href="checkout.html"]').classList.toggle('hidden', method !== 'card');
+  }
+
+  // Billing toggle
+  function toggleBilling() {
+    const same = document.getElementById('same-address').checked;
+    document.getElementById('billing-form').classList.toggle('hidden', same);
+  }
+
+  // Card number formatting & live preview
+  const cardNumberInput = document.getElementById('card-number');
+  const cardNameInput   = document.getElementById('card-name');
+  const cardExpiryInput = document.getElementById('card-expiry');
+  const cardCvvInput    = document.getElementById('card-cvv');
+
+  cardNumberInput.addEventListener('input', e => {
+    let val = e.target.value.replace(/\D/g, '').substring(0, 16);
+    e.target.value = val.replace(/(.{4})/g, '$1 ').trim();
+    const padded = val.padEnd(16, '•');
+    document.getElementById('preview-number').textContent =
+      `${padded.slice(0,4)} ${padded.slice(4,8)} ${padded.slice(8,12)} ${padded.slice(12,16)}`;
+    // Detect network
+    const network = val.startsWith('4') ? 'VISA' : val.startsWith('5') ? 'MC' : val.startsWith('3') ? 'AMEX' : '—';
+    document.getElementById('preview-network').textContent = network;
+    document.getElementById('card-network-icon').textContent = val.startsWith('4') ? '💳' : val.startsWith('5') ? '💳' : '';
+  });
+
+  cardNameInput.addEventListener('input', e => {
+    document.getElementById('preview-name').textContent = e.target.value.toUpperCase() || 'YOUR NAME';
+  });
+
+  cardExpiryInput.addEventListener('input', e => {
+    let val = e.target.value.replace(/\D/g, '').substring(0, 4);
+    if (val.length >= 2) val = val.slice(0, 2) + '/' + val.slice(2);
+    e.target.value = val;
+    document.getElementById('preview-expiry').textContent = val || 'MM/YY';
+  });
+
+  cardCvvInput.addEventListener('focus', () => document.querySelector('.card-preview').style.filter = 'blur(4px)');
+  cardCvvInput.addEventListener('blur',  () => document.querySelector('.card-preview').style.filter = '');
+
+  // Validation
+  function showErr(id, msg) { const el = document.getElementById(id); if(el){el.textContent=msg;el.classList.add('show');} }
+  function clearErr(id) { document.getElementById(id)?.classList.remove('show'); }
+
+  function placeOrder(method) {
+    if (method === 'Card') {
+      let ok = true;
+      clearErr('err-card-name'); clearErr('err-card-number'); clearErr('err-card-expiry'); clearErr('err-card-cvv');
+
+      const name    = cardNameInput.value.trim();
+      const number  = cardNumberInput.value.replace(/\s/g, '');
+      const expiry  = cardExpiryInput.value;
+      const cvv     = cardCvvInput.value;
+
+      if (!name)          { showErr('err-card-name',   'Name is required.'); ok = false; }
+      if (number.length !== 16) { showErr('err-card-number', 'Enter a valid 16-digit card number.'); ok = false; }
+      if (!/^\d{2}\/\d{2}$/.test(expiry)) { showErr('err-card-expiry', 'Enter a valid expiry (MM/YY).'); ok = false; }
+      if (cvv.length < 3) { showErr('err-card-cvv',   'Enter 3 or 4 digit CVV.'); ok = false; }
+      if (!ok) return;
+    }
+
+    const btn = document.getElementById('pay-btn') || event?.currentTarget;
+    if (btn) { btn.disabled = true; btn.textContent = 'Processing…'; }
+
+    setTimeout(() => {
+      const orderNum = 'ECO-' + Math.floor(Math.random() * 900000 + 100000);
+      Checkout.saveOrder({
+        number: orderNum,
+        items: Cart.get(),
+        total,
+        shipping: checkoutData.shipping || {},
+        address: checkoutData,
+        method,
+        date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }),
+      });
+      Cart.clear();
+      window.location.href = 'confirmation.html';
+    }, 2000);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecomarace — Sustainable Shopping</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="header__logo">eco<span>marace</span></a>
+    <nav>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="shop.html?cat=clothing">Clothing</a></li>
+        <li><a href="shop.html?cat=accessories">Accessories</a></li>
+      </ul>
+    </nav>
+    <div class="header__search">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search eco products…" id="search-input" autocomplete="off" />
+    </div>
+    <div class="header__actions">
+      <div id="user-area"></div>
+      <a href="cart.html" class="cart-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart
+        <span id="cart-badge"></span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero__inner">
+    <div>
+      <div class="hero__tag">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        100% Sustainable Products
+      </div>
+      <h1 class="hero__h1">Shop conscious.<br/>Live better.</h1>
+      <p class="hero__sub">Discover thoughtfully made products that are good for you — and good for the planet. Free shipping on orders over $50.</p>
+      <div class="hero__actions">
+        <a href="shop.html" class="btn btn--primary btn--lg">Shop Now</a>
+        <a href="shop.html" class="btn btn--outline btn--lg">Browse Categories</a>
+      </div>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero__card">
+        <div class="hero__card-icon">👕</div>
+        <div class="hero__card-name">Organic Tee</div>
+        <div class="hero__card-price">$39.99</div>
+      </div>
+      <div class="hero__card hero__card--offset">
+        <div class="hero__card-icon">👟</div>
+        <div class="hero__card-name">Eco Shoes</div>
+        <div class="hero__card-price">$149.99</div>
+      </div>
+      <div class="hero__card">
+        <div class="hero__card-icon">🎒</div>
+        <div class="hero__card-name">Hemp Bag</div>
+        <div class="hero__card-price">$119.99</div>
+      </div>
+      <div class="hero__card hero__card--offset">
+        <div class="hero__card-icon">⌚</div>
+        <div class="hero__card-name">Wood Watch</div>
+        <div class="hero__card-price">$199.99</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories-section">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-tag">Browse</div>
+        <h2>Shop by category</h2>
+      </div>
+    </div>
+    <div class="categories-grid" id="categories-grid"></div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-tag">Featured</div>
+        <h2>Best sellers</h2>
+      </div>
+      <a href="shop.html" class="btn btn--outline btn--sm">View all</a>
+    </div>
+    <div class="products-grid" id="featured-grid"></div>
+  </div>
+</section>
+
+<!-- Trust strip -->
+<div class="trust-strip">
+  <div class="container">
+    <div class="trust-strip__grid">
+      <div class="trust-item">
+        <div class="trust-item__icon">🌱</div>
+        <div class="trust-item__title">100% Sustainable</div>
+        <div class="trust-item__sub">Every product ethically made</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-item__icon">🚚</div>
+        <div class="trust-item__title">Free Shipping</div>
+        <div class="trust-item__sub">On all orders over $50</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-item__icon">↩️</div>
+        <div class="trust-item__title">30-Day Returns</div>
+        <div class="trust-item__sub">No questions asked</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-item__icon">🔒</div>
+        <div class="trust-item__title">Secure Checkout</div>
+        <div class="trust-item__sub">256-bit SSL encryption</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo">eco<span>marace</span></div>
+        <p class="footer__tagline">Sustainable products for a better tomorrow.</p>
+        <div class="footer__badges">
+          <span class="footer__badge">🌱 Carbon Neutral</span>
+          <span class="footer__badge">♻️ B Corp</span>
+          <span class="footer__badge">✅ Fair Trade</span>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Shop</h4>
+        <a href="shop.html">All Products</a>
+        <a href="shop.html?cat=clothing">Clothing</a>
+        <a href="shop.html?cat=accessories">Accessories</a>
+        <a href="shop.html?cat=sports">Sports</a>
+      </div>
+      <div class="footer__col">
+        <h4>Account</h4>
+        <a href="login.html">Login</a>
+        <a href="login.html#register">Register</a>
+        <a href="cart.html">My Cart</a>
+        <a href="confirmation.html">Orders</a>
+      </div>
+      <div class="footer__col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Sustainability</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2026 Ecomarace, Inc. All rights reserved.</span>
+      <span>Privacy · Terms · Cookies</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toasts"></div>
+<script src="js/app.js"></script>
+<script>
+  initHeader();
+
+  // Categories
+  const catGrid = document.getElementById('categories-grid');
+  catGrid.innerHTML = CATEGORIES.filter(c => c.id !== 'all').map(c => `
+    <a class="cat-card" href="shop.html?cat=${c.id}">
+      <span class="cat-card__icon">${c.icon}</span>
+      <span>${c.label}</span>
+    </a>`).join('');
+
+  // Featured (top 8 by reviews)
+  const featured = [...PRODUCTS].sort((a,b) => b.reviews - a.reviews).slice(0, 8);
+  document.getElementById('featured-grid').innerHTML = featured.map(productCard).join('');
+
+  // Search redirect
+  document.getElementById('search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+      window.location.href = `shop.html?q=${encodeURIComponent(e.target.value.trim())}`;
+    }
+  });
+</script>
+</body>
+</html>
